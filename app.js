@@ -177,8 +177,10 @@ function renderHome() {
   const totalBudget = categories.reduce((s, c) => s + Number(c.budget), 0);
   const totalSpent = Object.values(spentMap).reduce((s, v) => s + v, 0);
   const remaining = totalBudget - totalSpent;
-  const daysLeft = daysInMonth(now) - now.getDate() + 1;
-  const perDay = daysLeft > 0 ? remaining / daysLeft : 0;
+  const monthIncome = transactions
+    .filter((t) => t.type === "income" && isInMonth(txDate(t), now.getFullYear(), now.getMonth()))
+    .reduce((s, t) => s + Number(t.amount), 0);
+  const balance = monthIncome - totalSpent;
 
   const insightEl = document.getElementById("home-insight");
   if (remaining < 0) {
@@ -189,13 +191,14 @@ function renderHome() {
     insightEl.className = "insight";
   }
 
-  document.getElementById("home-hero-amount").textContent = remaining > 0 ? fmtMoney(perDay, 2) : "$0";
-  document.getElementById("home-hero-sub").textContent = remaining > 0
-    ? `${fmtMoney(remaining)} restantes en ${daysLeft} día${daysLeft === 1 ? "" : "s"}`
-    : (totalBudget > 0 ? "Sin presupuesto disponible este mes" : "Agrega un presupuesto en Ajustes para empezar");
+  document.getElementById("home-hero-amount").textContent = fmtMoney(Math.abs(balance));
+  document.getElementById("home-hero-sub").textContent = "Ingresos \u2212 gastos este mes";
+  const heroBadge = document.getElementById("home-hero-badge");
+  heroBadge.textContent = balance >= 0 ? "+" : "\u2212";
+  heroBadge.className = "hero-badge " + (balance >= 0 ? "green" : "red");
 
   document.getElementById("pill-spent").textContent = fmtMoney(totalSpent);
-  document.getElementById("pill-budget").textContent = fmtMoney(totalBudget);
+  document.getElementById("pill-budget").textContent = fmtMoney(monthIncome);
 
   // featured insight (most urgent category, not the projection)
   const featuredWrap = document.getElementById("home-featured-insight");
