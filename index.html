@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<title>ADDA01</title>
+<meta name="theme-color" content="#F2F2F5" />
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icons/icon-180.png" />
+<link rel="icon" href="icons/icon-192.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ===================== INICIO ===================== -->
+  <section id="tab-inicio" class="screen active">
+    <div class="topbar">
+      <div class="acct-pill">Personal</div>
+      <div class="top-icons">
+        <button class="icon-btn" id="btn-search-toggle" aria-label="Buscar"></button>
+      </div>
+    </div>
+
+    <div id="search-bar" class="search-bar hidden">
+      <input type="text" id="search-input" placeholder="Buscar transacciones..." />
+    </div>
+
+    <div id="home-insight" class="insight"></div>
+
+    <div class="label-small">Puedes gastar hoy</div>
+    <div class="big-row">
+      <div class="big-num" id="home-hero-amount">$0</div>
+    </div>
+    <div class="sub-line" id="home-hero-sub"></div>
+
+    <div class="pill-row">
+      <div class="pill"><span class="badge red">&minus;</span><span id="pill-spent">$0</span></div>
+      <div class="pill"><span class="badge green">+</span><span id="pill-budget">$0</span></div>
+    </div>
+
+    <div id="home-featured-insight" class="insight-card hidden"></div>
+
+    <div class="section-label">Presupuestos</div>
+    <div class="bars-row" id="home-bars"></div>
+
+    <div class="section-label" style="margin-bottom:0;">Reciente</div>
+    <div id="home-transactions"></div>
+    <div id="home-empty" class="empty-state hidden">
+      Aún no tienes gastos registrados.<br/>Usa el botón + para agregar el primero.
+    </div>
+  </section>
+
+  <!-- ===================== ANÁLISIS ===================== -->
+  <section id="tab-analisis" class="screen">
+    <div class="title">Análisis</div>
+
+    <div class="label-small">Este mes</div>
+    <div class="big-row">
+      <div class="big-num" id="an-total">$0</div>
+      <div class="change-pill hidden" id="an-change-pill"></div>
+    </div>
+    <div class="vs-label" id="an-vs-label"></div>
+
+    <div class="segmented" id="period-segmented">
+      <div class="segmented-indicator"></div>
+      <div class="segmented-option active" data-period="semana">Semana</div>
+      <div class="segmented-option" data-period="mes">Mes</div>
+      <div class="segmented-option" data-period="anio">Año</div>
+    </div>
+
+    <div class="chart-card">
+      <svg id="an-chart" viewBox="0 0 320 140" preserveAspectRatio="none"></svg>
+      <div class="chart-labels" id="an-chart-labels"></div>
+    </div>
+
+    <div class="section-label">Categorías</div>
+    <div id="an-categories"></div>
+
+    <div class="section-label" style="margin-top:4px;">Insights</div>
+    <div id="an-insights"></div>
+  </section>
+
+  <!-- ===================== AJUSTES ===================== -->
+  <section id="tab-ajustes" class="screen">
+    <div class="title">Ajustes</div>
+
+    <div class="profile-row" id="profile-row">
+      <div class="avatar-lg" id="profile-avatar">M</div>
+      <div>
+        <div class="profile-name" id="profile-name">Mateo</div>
+        <div class="profile-sub">Cuenta local · sin sincronizar</div>
+      </div>
+    </div>
+
+    <div class="section-label">Presupuestos</div>
+    <div class="section-card" id="categories-list"></div>
+    <button class="row row-button" id="btn-add-category">
+      <div class="row-icon" style="background:#1D1D1F;">+</div>
+      <div class="row-title">Nueva categoría</div>
+    </button>
+
+    <div class="section-label" style="margin-top:22px;">Apariencia</div>
+    <div class="section-card">
+      <div class="segmented" id="theme-segmented" style="margin:10px;">
+        <div class="segmented-indicator"></div>
+        <div class="segmented-option" data-theme="auto">Auto</div>
+        <div class="segmented-option" data-theme="light">Claro</div>
+        <div class="segmented-option" data-theme="dark">Oscuro</div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:22px;">Privacidad y seguridad</div>
+    <div class="section-card">
+      <div class="row">
+        <div class="row-icon" style="background:#1D1D1F;">🔒</div>
+        <div class="row-title">Face ID</div>
+        <div class="soon-tag">Requiere app nativa</div>
+      </div>
+    </div>
+    <div class="footnote">Tus datos se guardan solo en este dispositivo. ADDA01 no requiere crear una cuenta.</div>
+
+    <div class="section-label">Datos</div>
+    <div class="section-card">
+      <button class="row row-button" id="btn-export">
+        <div class="row-icon" style="background:#4A90D9;">⭳</div>
+        <div class="row-title">Exportar datos (JSON)</div>
+      </button>
+      <button class="row row-button" id="btn-clear">
+        <div class="row-icon" style="background:#E0393E;">🗑</div>
+        <div class="row-title" style="color:#E0393E;">Borrar todos los datos</div>
+      </button>
+    </div>
+
+    <div class="section-label">Acerca de</div>
+    <div class="section-card">
+      <div class="row"><div class="row-title">Versión</div><div class="row-value">1.0.0</div></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ===================== BOTTOM NAV ===================== -->
+<nav class="navbar">
+  <div class="nav-pill">
+    <button class="nav-tab active" data-tab="inicio">
+      <span class="nav-dot"></span>
+      <span class="nav-label">Inicio</span>
+    </button>
+    <button class="nav-tab" data-tab="analisis">
+      <span class="nav-dot"></span>
+      <span class="nav-label">Análisis</span>
+    </button>
+    <button class="nav-tab" data-tab="ajustes">
+      <span class="nav-dot"></span>
+      <span class="nav-label">Ajustes</span>
+    </button>
+  </div>
+  <button class="add-fab" id="btn-add-tx" aria-label="Agregar gasto">+</button>
+</nav>
+
+<!-- ===================== SHEET: ADD TRANSACTION ===================== -->
+<div class="overlay hidden" id="overlay-tx">
+  <div class="sheet">
+    <div class="grabber"></div>
+    <div class="sheet-head">
+      <div class="sheet-title">Nuevo gasto</div>
+      <button class="icon-btn-sm" id="close-tx-sheet">✕</button>
+    </div>
+
+    <div class="segmented segmented-2" id="tx-type-segmented">
+      <div class="segmented-indicator"></div>
+      <div class="segmented-option active" data-type="expense">Gasto</div>
+      <div class="segmented-option" data-type="income">Ingreso</div>
+    </div>
+
+    <div class="field-label">Entrada rápida</div>
+    <input type="text" id="quick-entry" class="input" placeholder='Ej: "almuerzo 12.50"' />
+    <div class="hint" id="quick-entry-hint"></div>
+
+    <div id="tx-cat-section">
+      <div class="field-label" style="margin-top:14px;">Categoría</div>
+      <div class="cat-chip-row" id="tx-cat-chips"></div>
+    </div>
+
+    <div class="field-label">Monto</div>
+    <input type="number" id="tx-amount" class="input" placeholder="0" step="0.01" />
+
+    <div class="field-label">Fecha</div>
+    <input type="date" id="tx-date" class="input" />
+
+    <div class="field-label">Nota (opcional)</div>
+    <input type="text" id="tx-note" class="input" placeholder="Ej: Factura de agua" />
+
+    <button class="primary-btn" id="save-tx">Agregar</button>
+  </div>
+</div>
+
+<!-- ===================== SHEET: ADD/EDIT CATEGORY ===================== -->
+<div class="overlay hidden" id="overlay-cat">
+  <div class="sheet">
+    <div class="grabber"></div>
+    <div class="sheet-head">
+      <div class="sheet-title" id="cat-sheet-title">Nueva categoría</div>
+      <button class="icon-btn-sm" id="close-cat-sheet">✕</button>
+    </div>
+
+    <div class="field-label">Nombre</div>
+    <input type="text" id="cat-name" class="input" placeholder="Ej: Transporte" />
+
+    <div class="field-label">Emoji</div>
+    <div class="emoji-grid" id="cat-emoji-grid"></div>
+
+    <div class="field-label">Presupuesto mensual</div>
+    <input type="number" id="cat-budget" class="input" placeholder="0" step="1" />
+
+    <button class="primary-btn" id="save-cat">Guardar</button>
+    <button class="danger-link hidden" id="delete-cat">Eliminar categoría</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
